@@ -1,0 +1,153 @@
+/* 经典复刻版 · 样式表（原创绘制） */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; }
+body {
+  background: radial-gradient(circle at 50% 10%, #6ab9f2 0%, #3f8fd6 45%, #2366a8 100%);
+  font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  user-select: none; -webkit-user-select: none;
+}
+#stage { width: 1000px; height: 700px; position: relative; }
+#game {
+  position: absolute; top: 0; left: 0;
+  width: 1000px; height: 700px;
+  transform-origin: top left;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.45), inset 0 0 0 4px rgba(255,255,255,.25);
+  background: #8fd15c;
+}
+
+/* ---------- 背景 ---------- */
+.sky { position: absolute; inset: 0 0 590px 0; background: linear-gradient(#79c8f7 0%, #a9dcf9 70%, #d5edb2 100%); overflow: hidden; }
+.sun-glow { position: absolute; right: 120px; top: -40px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(255,250,190,.95), rgba(255,240,140,0) 70%); }
+.cloud { position: absolute; width: 150px; height: 46px; background: rgba(255,255,255,.88); border-radius: 50px; filter: blur(.2px); animation: drift 45s linear infinite; }
+.cloud i { position: absolute; background: inherit; border-radius: 50%; }
+.cloud i:nth-child(1) { width: 62px; height: 62px; left: 20px; top: -26px; }
+.cloud i:nth-child(2) { width: 78px; height: 78px; left: 62px; top: -36px; }
+.cloud i:nth-child(3) { width: 50px; height: 50px; left: 108px; top: -18px; }
+.cloud-a { left: 120px; top: 26px; }
+.cloud-b { left: 560px; top: 12px; transform: scale(.75); animation-duration: 62s; animation-delay: -18s; }
+.cloud-c { left: 820px; top: 48px; transform: scale(.55); animation-duration: 55s; animation-delay: -35s; }
+@keyframes drift { from { margin-left: -220px; } to { margin-left: 1100px; } }
+.fence { position: absolute; left: 0; top: 92px; width: 1000px; height: 26px; background:
+  repeating-linear-gradient(90deg, transparent 0 26px, rgba(120,80,40,.25) 26px 30px),
+  linear-gradient(#f6e7bd, #d8bf86); border-bottom: 4px solid #a77f4d; opacity: .95; }
+.right-path { position: absolute; right: 0; top: 112px; width: 94px; height: 500px;
+  background: repeating-linear-gradient(0deg, #d9c39a 0 46px, #cfb78b 46px 92px);
+  border-left: 5px solid rgba(120,90,50,.25); }
+.right-path::after { content: "🏠"; position: absolute; right: 2px; bottom: 12px; font-size: 58px; filter: drop-shadow(0 4px 4px rgba(0,0,0,.3)); }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; left: 0; top: 0; width: 1000px; height: 100px; z-index: 60;
+  background: linear-gradient(180deg, rgba(74,52,28,.96), rgba(112,80,42,.94));
+  border-bottom: 5px solid #5b3e21; display: flex; align-items: flex-start; padding: 8px 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.25); }
+#seed-bank { display: flex; gap: 4px; padding: 6px; border-radius: 10px;
+  background: linear-gradient(#b58a53, #8a6234); border: 2px solid #6b4723; box-shadow: inset 0 2px 5px rgba(255,255,255,.25); }
+.seed-card { width: 58px; height: 74px; border-radius: 6px; position: relative; cursor: pointer; overflow: hidden;
+  background: linear-gradient(#fdf8e6, #e9d9ae); border: 2px solid #7a562e; display: flex; flex-direction: column;
+  align-items: center; transition: transform .12s, box-shadow .12s; }
+.seed-card:hover { transform: translateY(-3px); }
+.seed-card.selected { box-shadow: 0 0 0 3px #ffe45e, 0 0 16px #ffd633; transform: translateY(-3px); }
+.seed-card.disabled { filter: grayscale(.85) brightness(.72); cursor: not-allowed; }
+.seed-card svg { width: 44px; height: 48px; margin-top: 1px; pointer-events: none; }
+.seed-card .card-name { font-size: 10px; line-height: 12px; color: #4a3218; font-weight: 700; white-space: nowrap; }
+.seed-card .card-cost { position: absolute; top: 1px; right: 2px; font-size: 12px; font-weight: 900; color: #1d5c9e; text-shadow: 0 1px #fff, 0 0 3px #fff; }
+.seed-card .cd-mask { position: absolute; left: 0; bottom: 0; width: 100%; height: 0%; background: rgba(10,20,30,.62); pointer-events: none; }
+.seed-card .key { position: absolute; left: 2px; bottom: 1px; font-size: 9px; color: #8a6a45; }
+.hud-tools { margin-left: 12px; display: flex; align-items: center; gap: 7px; }
+#sun-counter { width: 92px; height: 66px; border-radius: 8px; background: linear-gradient(#fdf6d8, #e6cf94);
+  border: 3px solid #6b4723; display: flex; align-items: center; justify-content: center; gap: 5px; box-shadow: inset 0 3px 7px rgba(255,255,255,.6); }
+.sun-mini { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff8b0, #ffc62e 65%, #f09a15);
+  box-shadow: 0 0 9px #ffd54a; animation: sunspin 9s linear infinite; flex: none; }
+#sun-value { font-size: 22px; color: #5a3c14; font-weight: 900; text-shadow: 0 1px #fff; }
+.tool-btn { width: 38px; height: 38px; border-radius: 8px; border: 2px solid #5d3e1e; cursor: pointer; font-size: 19px;
+  background: linear-gradient(#e9d3a3, #b9925d); box-shadow: 0 3px 0 #5d3e1e; transition: .1s; }
+.tool-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #5d3e1e; }
+.tool-btn.active { background: #ffe066; box-shadow: 0 0 0 3px #fff3a8, 0 3px 0 #5d3e1e; }
+
+/* ---------- 草坪 ---------- */
+#lawn { position: absolute; left: 96px; top: 108px; width: 810px; height: 500px; z-index: 10; cursor: crosshair; }
+#grid, #entity-layer, #sun-layer, #fx-layer { position: absolute; inset: 0; }
+#grid { display: grid; grid-template-columns: repeat(9, 90px); grid-template-rows: repeat(5, 100px); }
+.cell { width: 90px; height: 100px; border: 1px solid rgba(30,90,20,.13);
+  background: linear-gradient(160deg, rgba(255,255,255,.10), rgba(0,0,0,.06)); }
+.cell:nth-child(18n+1), .cell:nth-child(18n+3), .cell:nth-child(18n+5), .cell:nth-child(18n+7), .cell:nth-child(18n+9),
+.cell:nth-child(18n+10), .cell:nth-child(18n+12), .cell:nth-child(18n+14), .cell:nth-child(18n+16), .cell:nth-child(18n+18) { background: rgba(255,255,255,.09); }
+.cell.hover { background: rgba(255,255,90,.42) !important; box-shadow: inset 0 0 0 2px rgba(255,255,120,.9); }
+.cell.blocked { background: rgba(255,80,80,.32) !important; box-shadow: inset 0 0 0 2px rgba(255,120,120,.9); }
+#entity-layer, #sun-layer, #fx-layer, #mower-layer { pointer-events: none; }
+#sun-layer .sun-token { pointer-events: auto; cursor: pointer; }
+.plant, .zombie, .pea, .effect, .sun-token { position: absolute; will-change: transform, left; }
+.plant { width: 90px; height: 100px; }
+.plant .sprite { width: 90px; height: 100px; transform-origin: 50% 92%; animation: bob 2.6s ease-in-out infinite; }
+.plant.fired .sprite { animation: shoot .22s ease-out; }
+.plant.chomping .sprite { animation: chomp .4s ease-in-out; }
+.plant.hurt .sprite { filter: brightness(1.5) saturate(.6); }
+.plant.dying { animation: vanish .4s forwards; }
+.zombie { width: 100px; height: 140px; }
+.zombie .sprite { width: 100px; height: 140px; transform-origin: 50% 95%; animation: walk 1.05s ease-in-out infinite; }
+.zombie.eating .sprite { animation: eat .4s ease-in-out infinite; }
+.zombie.slowed .sprite { filter: hue-rotate(150deg) brightness(1.12); }
+.zombie.hit .sprite { filter: brightness(2) saturate(.2); }
+.zombie.dying .sprite { animation: zombiedie .55s forwards; }
+.zombie .hat-lost { display: none; }
+.pea { width: 20px; height: 20px; }
+.pea svg { width: 100%; height: 100%; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.25)); }
+.sun-token { width: 62px; height: 62px; z-index: 80; }
+.sun-token svg { width: 100%; height: 100%; animation: sunspin 12s linear infinite; filter: drop-shadow(0 0 8px rgba(255,220,80,.85)); }
+.sun-token:hover { transform: scale(1.12); }
+.fx { position: absolute; font-weight: 900; color: #fff8b0; text-shadow: 0 2px 4px #7a3b00, 0 0 10px #ffbe27; font-size: 22px; animation: floatup 1s forwards; }
+.boom { position: absolute; width: 170px; height: 170px; margin: -85px 0 0 -85px; border-radius: 50%;
+  background: radial-gradient(circle, #fff6b0 0%, #ffb22e 35%, #f04a18 65%, rgba(180,30,10,0) 72%);
+  animation: boom .5s ease-out forwards; }
+.mower { position: absolute; width: 62px; height: 56px; top: 0; }
+.mower svg { width: 100%; height: 100%; }
+.mower.moving { animation: mowerrun .35s linear infinite; }
+
+/* ---------- 进度条 / 提示 ---------- */
+#progress-wrap { position: absolute; left: 96px; top: 625px; width: 810px; z-index: 55; }
+.progress-track { position: relative; height: 22px; border-radius: 12px; background: #4c7a2c; border: 3px solid #36591f; overflow: visible; box-shadow: inset 0 2px 5px rgba(0,0,0,.3); }
+#progress-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0%; border-radius: 10px;
+  background: linear-gradient(90deg, #a4e75c, #e9f668); transition: width .3s linear; }
+.flag { position: absolute; top: -18px; width: 4px; height: 40px; background: #fff; }
+.flag::before { content: ""; position: absolute; left: 4px; top: 0; border: 9px solid transparent; border-left: 15px solid #d63b2f; }
+#wave-label { text-align: center; color: #fff8d0; font-size: 13px; font-weight: 700; margin-top: 5px; text-shadow: 0 2px 3px rgba(0,0,0,.6); }
+#toast { position: absolute; left: 50%; top: 130px; transform: translateX(-50%); z-index: 90;
+  color: #fff; background: rgba(30,35,20,.78); padding: 7px 18px; border-radius: 20px; font-size: 15px; opacity: 0; transition: opacity .3s; }
+#toast.show { opacity: 1; }
+
+/* ---------- 遮罩 ---------- */
+.overlay { position: absolute; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center;
+  background: rgba(12,28,12,.62); backdrop-filter: blur(3px); }
+.overlay.hidden { display: none; }
+.panel { width: 560px; padding: 34px 40px; text-align: center; border-radius: 22px;
+  background: linear-gradient(#fffdf0, #f2e2b8); border: 5px solid #8b5e2f; box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+.panel.small { width: 440px; }
+.panel h1 { font-size: 46px; color: #386b1f; text-shadow: 2px 3px #d9eaa7, 0 0 1px #fff; letter-spacing: 3px; }
+.panel h2 { font-size: 28px; color: #6b3f1c; margin-bottom: 14px; }
+.subtitle { margin: 8px 0 20px; color: #8a6a3f; font-size: 14px; }
+.howto { text-align: left; background: rgba(255,255,255,.55); border-radius: 12px; padding: 14px 18px; margin-bottom: 22px; color: #5b4529; font-size: 14px; line-height: 2; }
+.big-btn { border: none; cursor: pointer; font-size: 20px; font-weight: 800; color: #fff;
+  padding: 13px 44px; border-radius: 40px; background: linear-gradient(#7bc94d, #4c9d2e);
+  box-shadow: 0 5px 0 #356e1f, 0 10px 18px rgba(0,0,0,.22); transition: .12s; }
+.big-btn:hover { filter: brightness(1.06); }
+.big-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #356e1f; }
+.ghost-btn { display: block; margin: 14px auto 0; border: 2px solid #a88a5a; background: transparent; color: #6b4c28;
+  border-radius: 20px; padding: 7px 22px; cursor: pointer; font-size: 14px; }
+#end-stats { color: #6b4c28; margin-bottom: 20px; line-height: 1.8; font-size: 15px; }
+
+/* ---------- 动画 ---------- */
+@keyframes bob { 0%,100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-3px); } }
+@keyframes shoot { 0% { transform: scaleX(1); } 40% { transform: scaleX(.86) translateX(-3px); } 100% { transform: scaleX(1); } }
+@keyframes chomp { 0%,100% { transform: scale(1); } 45% { transform: scale(1.16) rotate(8deg); } }
+@keyframes walk { 0%,100% { transform: rotate(-2.5deg) translateY(0); } 50% { transform: rotate(2.5deg) translateY(-2px); } }
+@keyframes eat { 0%,100% { transform: rotate(0) translateX(0); } 50% { transform: rotate(-4deg) translateX(-3px); } }
+@keyframes zombiedie { to { opacity: 0; transform: translateY(22px) rotate(70deg) scale(.9); filter: grayscale(1); } }
+@keyframes vanish { to { opacity: 0; transform: scale(.4) rotate(25deg); } }
+@keyframes sunspin { to { transform: rotate(360deg); } }
+@keyframes floatup { 0% { opacity: 1; transform: translateY(0) scale(.8); } 100% { opacity: 0; transform: translateY(-48px) scale(1.2); } }
+@keyframes boom { 0% { transform: scale(.2); opacity: 1; } 100% { transform: scale(1.25); opacity: 0; } }
+@keyframes mowerrun { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(-3deg); } }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>植物大战僵尸 · 经典复刻版</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="stage">
+    <div id="game">
+      <div class="sky">
+        <div class="cloud cloud-a"><i></i><i></i><i></i></div>
+        <div class="cloud cloud-b"><i></i><i></i><i></i></div>
+        <div class="cloud cloud-c"><i></i><i></i></div>
+        <div class="sun-glow"></div>
+      </div>
+      <div class="fence"></div>
+      <div class="right-path"></div>
+
+      <div id="hud">
+        <div id="seed-bank"></div>
+        <div class="hud-tools">
+          <div id="sun-counter" title="阳光"><span class="sun-mini"></span><b id="sun-value">150</b></div>
+          <button id="shovel" class="tool-btn" title="铲除植物 (X)"><span>🪏</span></button>
+          <button id="sound-btn" class="tool-btn" title="声音开关"><span>🔊</span></button>
+          <button id="pause-btn" class="tool-btn" title="暂停 (Esc)"><span>⏸</span></button>
+        </div>
+      </div>
+
+      <div id="lawn">
+        <div id="grid"></div>
+        <div id="entity-layer"></div>
+        <div id="sun-layer"></div>
+        <div id="fx-layer"></div>
+      </div>
+      <div id="mower-layer"></div>
+
+      <div id="progress-wrap">
+        <div class="progress-track">
+          <div id="progress-fill"></div>
+          <div class="flag" style="left:0%"></div>
+          <div class="flag" style="left:25%"></div>
+          <div class="flag" style="left:50%"></div>
+          <div class="flag" style="left:75%"></div>
+          <div class="flag" style="left:100%"></div>
+        </div>
+        <div id="wave-label">准备迎敌…</div>
+      </div>
+
+      <div id="toast"></div>
+
+      <div id="start-screen" class="overlay">
+        <div class="panel">
+          <h1>植物大战僵尸</h1>
+          <p class="subtitle">经典玩法复刻 · 原创绘制素材</p>
+          <div class="howto">
+            <p>🌻 收集阳光，用卡片种下植物，挡住僵尸进屋。</p>
+            <p>🖱️ 选卡片 → 点草坪种植；点阳光收集；点铲子移除植物。</p>
+            <p>⌨️ 数字键 1–9 选卡，X 铲子，Esc 取消 / 暂停。</p>
+          </div>
+          <button id="start-btn" class="big-btn">开始游戏</button>
+        </div>
+      </div>
+
+      <div id="pause-screen" class="overlay hidden">
+        <div class="panel small">
+          <h2>游戏暂停</h2>
+          <button id="resume-btn" class="big-btn">继续游戏</button>
+          <button id="restart-pause-btn" class="ghost-btn">重新开始</button>
+        </div>
+      </div>
+
+      <div id="end-screen" class="overlay hidden">
+        <div class="panel small">
+          <h2 id="end-title">僵尸吃掉了你的脑子！</h2>
+          <p id="end-stats"></p>
+          <button id="restart-btn" class="big-btn">再玩一次</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/sprites.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
